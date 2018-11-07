@@ -1,7 +1,12 @@
+import { query, weather } from '../../api/views/Talk'
+
 const state = {
-  userId: undefined,
-  dialog: [{ side: 'left', text: '有什么想要对我说的吗？' }],
-  value: ''
+  userId: undefined, // 用户身份标识
+  dialog: [
+    { side: 'left', text: '您好，我是AI助理福小兔，很高兴为您服务～' },
+    { type: 'card' }
+  ], // 对话数据
+  value: '' // 当前输入框的值
 }
 
 const getters = {}
@@ -12,19 +17,9 @@ const mutations = {
     state.value = value
   },
 
-  // 更新对话框的状态
-  SET_DIALOG_VALUE: state => {
-    state.dialog.push({
-      side: 'right',
-      text: state.value
-    })
-    // 测试用例
-    setTimeout(() => {
-      state.dialog.push({
-        side: 'left',
-        text: '今天天气很晴朗～'
-      })
-    }, 700)
+  // 更新对话框的数据
+  SET_DIALOG_VALUE: (state, { side, text }) => {
+    state.dialog.push({ side, text })
   },
 
   // 更新userId
@@ -40,14 +35,52 @@ const actions = {
   },
 
   // 提交
-  submit: ({ commit }) => {
-    commit('SET_DIALOG_VALUE')
+  submit: ({ commit, state, dispatch }, payload) => {
+    const value = payload || state.value
+    commit('SET_DIALOG_VALUE', {
+      side: 'right',
+      text: value
+    })
+    dispatch('api_query')
+    dispatch('api_weather')
     commit('SET_INPUT_VALUE', '')
   },
 
   // 更新用户身份信息
   set_userId: ({ commit }, value) => {
     commit('SET_USERID', value)
+  },
+
+  // 把用户问题发送给后端
+  api_query: async ({ commit, state }) => {
+    // 入参
+    const params = { query: state.value }
+    // http请求
+    const res = await query(params)
+
+    // const test = await getLocation('')
+
+    // console.log('test =', test)
+    // 格式化数据
+    const apiData = res.data
+    console.log('apiData =', apiData)
+    // 更新State
+    commit('SET_DIALOG_VALUE', {
+      side: 'left',
+      text: apiData
+    })
+  },
+
+  // 请求天气
+  api_weather: async ({ commit, state }) => {
+    // 入参
+    const params = undefined
+    // http请求
+    const res = await weather(params)
+    // 格式化数据
+    const apiData = res
+
+    console.log('apiData =', apiData)
   }
 }
 

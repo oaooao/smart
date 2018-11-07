@@ -1,7 +1,9 @@
 import Vue from 'vue'
-import { Button, Input } from 'iview'
+import { Button, Input, Card } from 'iview'
 
-import 'iview/dist/styles/iview.css'
+import './index.less'
+// import 'iview/dist/styles/iview.css'
 
 Vue.component('Button', Button)
 Vue.component('Input', Input)
+Vue.component('Card', Card)

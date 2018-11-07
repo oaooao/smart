@@ -3,7 +3,17 @@
         <div class="wrapper">
 
             <header id="title">
-                <h3>欢迎使用福特答疑小管家</h3>
+                <!-- <h3>欢迎使用福特答疑小管家</h3> -->
+                <div class="logo">
+                  <img src="../assets/images/Ford.png" alt="">
+                </div>
+                <div class="info">
+                  <img src="../assets/images/cloudy.png" class="wea-logo" alt="">
+                  <span class="weather-condition">多云</span>
+                  <span class="temperature">16-22度</span>
+                  <img src="../assets/images/location.png" class="location-logo" alt="">
+                  <span class="location">上海</span>
+                </div>
             </header>
 
             <section id="show" @mouseover="handleMouseover" @mouseout="handleMouseout" @scroll="handleScroll">
@@ -14,6 +24,7 @@
                         :key="index"
                         :text="item.text"
                         :side="item.side"
+                        :type="item.type"
                     />
                 </div>
 
@@ -27,7 +38,7 @@
                         v-model="value"
                         type="textarea"
                         :rows="6"
-                        placeholder="Enter something..."
+                        placeholder="请输入您的问题"
                         @keydown.enter.native.prevent="handleSubmit"
                     />
                 </div>
@@ -36,6 +47,7 @@
                     <Button
                         type="success"
                         size="large"
+                        shape="circle"
                         @click="handleSubmit"
                     >
                         发送
@@ -118,7 +130,7 @@ export default {
 
   .wrapper {
     width: 700px;
-    height: 688px;
+    // height: 688px;
     border: 1px solid rgba(128, 128, 128, 0.288);
     border-radius: 5px;
     overflow: hidden;
@@ -127,8 +139,51 @@ export default {
 
     #title {
       width: 100%;
-      height: 50px;
+      height: 75px;
       line-height: 50px;
+      background-color: #36404d;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 20px;
+
+      .logo {
+        margin-top: 20px;
+
+        > img {
+          width: 95px;
+          position: relative;
+          top: 31px;
+          left: 13px;
+        }
+      }
+
+      .info {
+        color: #fff;
+        display: flex;
+        align-items: flex-end;
+
+        > img {
+          width: 30px;
+          padding-bottom: 13px;
+          margin: 0 3px;
+        }
+
+        .weather-condition {
+          margin-right: 8px;
+        }
+
+        .temperature {
+          margin-right: 8px;
+        }
+
+        .location {
+        }
+
+        .location-logo {
+          width: 15px;
+        }
+      }
     }
 
     #show {
@@ -156,6 +211,10 @@ export default {
         position: absolute;
         bottom: 10px;
         right: 20px;
+
+        button {
+          padding: 5px 30px;
+        }
       }
 
       textarea {

@@ -18,7 +18,10 @@ export default {
     let userId = Cookies.get('userId')
 
     if (!userId) {
-      userId = 'ford00001'
+      let randomNum = Math.floor(Math.random() * 10 ** 16)
+
+      userId = `ford${randomNum}`
+
       Cookies.set('userId', userId, { expires: 7 })
     }
 
@@ -36,7 +39,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   min-width: 100vw;
   min-height: 100vh;
