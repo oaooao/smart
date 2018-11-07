@@ -13,6 +13,12 @@ const query = data => http('/query', data)
 const getLocation = data => http('/getLocation', data)
 
 // 天气
-const weather = data => http('/weather', data)
+const getWeatherAndLocation = data => http('/getWeatherAndLocation', data)
 
-export { getChatRecord, updateChatRecord, query, getLocation, weather }
+export {
+  getChatRecord,
+  updateChatRecord,
+  query,
+  getLocation,
+  getWeatherAndLocation
+}

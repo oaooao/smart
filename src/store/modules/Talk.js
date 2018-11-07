@@ -1,4 +1,4 @@
-import { query, weather } from '../../api/views/Talk'
+import { query, getWeatherAndLocation } from '../../api/views/Talk'
 
 const state = {
   userId: undefined, // 用户身份标识
@@ -6,7 +6,12 @@ const state = {
     { side: 'left', text: '您好，我是AI助理福小兔，很高兴为您服务～' },
     { type: 'card' }
   ], // 对话数据
-  value: '' // 当前输入框的值
+  value: '', // 当前输入框的值
+  userInfo: {
+    weather: '', // 天气
+    location: '', // 位置
+    temperature: '' // 温度
+  }
 }
 
 const getters = {}
@@ -25,6 +30,13 @@ const mutations = {
   // 更新userId
   SET_USERID: (state, value) => {
     state.userId = value
+  },
+
+  // 更新天气和位置
+  SET_WEATHER_LOCATION: (state, { weather, location, temperature }) => {
+    state.userInfo.weather = weather
+    state.userInfo.location = location
+    state.userInfo.temperature = temperature
   }
 }
 
@@ -76,9 +88,15 @@ const actions = {
     // 入参
     const params = undefined
     // http请求
-    const res = await weather(params)
+    const res = await getWeatherAndLocation(params)
     // 格式化数据
-    const apiData = res
+    const apiData = {
+      location: res.data[0].currentCity,
+      weather: res.data[0].weather_data[0].weather,
+      temperature: res.data[0].weather_data[0].temperature
+    }
+    // 更新store中的数据
+    commit('SET_WEATHER_LOCATION', apiData)
 
     console.log('apiData =', apiData)
   }

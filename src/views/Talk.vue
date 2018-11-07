@@ -9,10 +9,10 @@
                 </div>
                 <div class="info">
                   <img src="../assets/images/cloudy.png" class="wea-logo" alt="">
-                  <span class="weather-condition">多云</span>
-                  <span class="temperature">16-22度</span>
+                  <span class="weather-condition">{{userInfo.weather}}</span>
+                  <span class="temperature">{{userInfo.temperature}}</span>
                   <img src="../assets/images/location.png" class="location-logo" alt="">
-                  <span class="location">上海</span>
+                  <span class="location">{{userInfo.location}}</span>
                 </div>
             </header>
 
@@ -67,6 +67,10 @@ import { mapState, mapActions } from 'vuex'
 export default {
   components: { FordDialog },
 
+  created () {
+    this.api_weather()
+  },
+
   data () {
     return {
       position: 'absolute'
@@ -76,7 +80,8 @@ export default {
   computed: {
     ...mapState({
       Talk: state => state.Talk,
-      dialog: state => state.Talk.dialog
+      dialog: state => state.Talk.dialog,
+      userInfo: state => state.Talk.userInfo
     }),
 
     value: {
@@ -90,7 +95,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setInputValue', 'submit']),
+    ...mapActions(['setInputValue', 'submit', 'api_weather']),
 
     handleMouseover (e) {
       this.position = 'initial'
