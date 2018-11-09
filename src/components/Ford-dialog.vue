@@ -64,7 +64,7 @@
                     <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
                         {{ `${item.sname}(${item.saddress})` }}
                         <p slot="content" class="x_mid">
-                          <DatePicker type="date" placeholder="Select date" style="width: 200px"></DatePicker>
+                          <DatePicker type="date" placeholder="请选择预约日期" style="width: 240px" size="large" :options="options"></DatePicker>
                         </p>
                     </Panel>
         </Collapse>
@@ -144,7 +144,12 @@ export default {
     return {
       cards: cards,
       citys: citys,
-      value: '0'
+      value: '0',
+      options: {
+        disabledDate (date) {
+          return date && date.valueOf() < Date.now() - 86400000
+        }
+      }
     }
   },
   methods: {
@@ -293,6 +298,6 @@ export default {
 
 .x {
   margin-left: 68px;
-  width: 70%;
+  width: 60%;
 }
 </style>
