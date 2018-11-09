@@ -5,24 +5,30 @@
             <header id="title">
                 <!-- <h3>欢迎使用福特答疑小管家</h3> -->
                 <div class="logo">
-                  <img src="../assets/images/Ford.png" alt="">
+                  <img src="@/assets/images/Ford.png" alt="">
                 </div>
                 <div class="info">
-                  <img src="../assets/images/cloudy.png" class="wea-logo" alt="">
+                  <img :src="require(`@/assets/images/${weather_condition}.png`)" class="wea-logo" alt="">
                   <span class="weather-condition">{{userInfo.weather}}</span>
                   <span class="temperature">{{userInfo.temperature}}</span>
-                  <img src="../assets/images/location.png" class="location-logo" alt="">
+                  <img src="@/assets/images/location.png" class="location-logo" alt="">
                   <span class="location">{{userInfo.location}}</span>
                 </div>
             </header>
 
-            <section id="show" @mouseover="handleMouseover" @mouseout="handleMouseout" @scroll="handleScroll">
+            <section id="show" @mouseenter="handleMouseover" @mouseout="handleMouseout" @scroll="handleScroll">
 
                 <div id="dialog-wrapper" :style="{ position: position }">
                     <Ford-dialog
                         v-for="(item, index) in dialog"
                         :key="index"
-                        :text="item.text"
+                        :msg="item.msg"
+                        :s1="item.s1"
+                        :s2="item.s2"
+                        :carShopInfo="item.carShopInfo"
+                        :location="item.location"
+                        :intention="item.intention"
+                        :comma="item.comma"
                         :side="item.side"
                         :type="item.type"
                     />
@@ -91,6 +97,23 @@ export default {
       get () {
         return this.Talk.value
       }
+    },
+
+    weather_condition () {
+      const { weather } = this.userInfo
+      if (weather.includes('雪')) {
+        return 'xue'
+      } else if (weather.includes('雷电')) {
+        return 'leidian'
+      } else if (weather.includes('雨')) {
+        return 'yu'
+      } else if (weather.includes('晴')) {
+        return 'qing'
+      } else if (weather.includes('多云')) {
+        return 'duoyun'
+      } else {
+        return 'duoyun'
+      }
     }
   },
 
@@ -98,10 +121,13 @@ export default {
     ...mapActions(['setInputValue', 'submit', 'api_weather']),
 
     handleMouseover (e) {
-      this.position = 'initial'
-      document
-        .getElementById('dialog-wrapper')
-        .lastElementChild.scrollIntoView()
+      console.log('滑上来了')
+      this.position = 'inherit'
+      setTimeout(() => {
+        document
+          .getElementById('dialog-wrapper')
+          .lastElementChild.scrollIntoView()
+      }, 300)
     },
 
     handleMouseout (e) {
@@ -141,6 +167,7 @@ export default {
     overflow: hidden;
     background: #eeeeee;
     border-bottom: none;
+    transition: all 1s;
 
     #title {
       width: 100%;

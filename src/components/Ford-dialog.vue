@@ -1,45 +1,74 @@
 <template>
     <div>
+      <!-- 文字对话内容 -->
 
-    <!-- 文字对话内容 -->
-    <div v-bind:class="['dialog-' + side]" v-if="type === 'text'">
-        <!-- 头像 -->
-        <div class="avatar">
-            <img v-if="side === 'left'" src="@/assets/images/fordLogo.png" alt="">
-            <img v-else src="@/assets/wx-icon.jpeg" alt="">
-        </div>
-        <!-- 内容 -->
-        <div class="content">
-            <span class="text">
-                {{ text }}
-            </span>
-            <div class="arrow"></div>
-        </div>
-    </div>
+      <div v-bind:class="['dialog-' + side]" v-if="type === 'text'">
+          <!-- 头像 -->
 
-    <!-- FAQ知识卡片 -->
-    <div v-else-if="type === 'card'" class="card">
-      <Card>
-        <p slot="title">补贴政策查询</p>
-        <img src="../assets/images/btzc.jpg" alt="" @click="handleBTZC">
-      </Card>
+          <div class="avatar">
+              <!-- 机器人头像 -->
+              <img v-if="side === 'left'" src="@/assets/images/fordLogo.png" alt="">
+              <!-- 用户头像 -->
+              <img v-else src="@/assets/wx-icon.jpeg" alt="">
+          </div>
 
-      <Card >
-        <p slot="title">预约试驾</p>
-        <img src="../assets/images/yysj.jpg" alt="">
-      </Card>
+          <!-- 内容 -->
 
-      <Card >
-        <p slot="title">领界纯电价格</p>
-        <img src="../assets/images/ljjg.jpg" alt="">
-      </Card>
+          <div class="content">
+              <!-- 默认意图 -->
+              <div class="text" v-if="intention === 'default'">
+                  {{ msg }}
+                  <!-- 根据GPS定位，您当前所在位置为: <span class="location">上海[更改]</span>,
+                  国补的金额会根据电池密度和续航里程等不同而有所区别，以福特汽车旗下的Territory纯电动车为例，国补金额为45000元。上海地补金额对于纯电动车按照国补50%补助，所以地补金额为225000元。补贴金额总计67500元。 -->
+              </div>
+              <!-- 补贴意图 -->
+              <div class="text" v-else-if="intention === '补贴' || intention === '预约试驾'">
+                  <!-- {{ s1 + location + ',' + s2 + msg }} -->
+                  <span>
+                    {{ s1 }}
+                  </span>
+                  <!-- 城市选择 -->
+                  <Dropdown v-if="!msg" trigger="click" @on-click="handleSelectCity">
+                      <Button type="info" size="small">
+                          {{ location }}
+                          <Icon type="ios-arrow-down"></Icon>
+                      </Button>
 
-      <Card >
-        <p slot="title">上海车展</p>
-        <img src="../assets/images/gnc2.jpg" class="x" alt="">
-      </Card>
-    </div>
+                      <DropdownMenu slot="list" v-for="item in citys" :key="item.id">
+                        <DropdownItem :name="item.cityName" :disabled="location===item.cityName">{{item.cityName}}</DropdownItem>
+                      </DropdownMenu>
+                  </Dropdown>
+                  <span>
+                    {{comma + s2 + msg}}
+                  </span>
+              </div>
+              <!-- 对话框箭头 -->
+              <div class="arrow"></div>
+          </div>
 
+      </div>
+
+      <!-- FAQ知识卡片 -->
+
+      <div v-else-if="type === 'card'" class="card">
+        <Card v-for="item in cards" :key="item.id" >
+          <p slot="title">{{ item.title }}</p>
+          <img :src="require(`@/assets/images/${item.imgUrl}.jpg`)" alt="" @click="handleCardsClick(item.title)">
+        </Card>
+      </div>
+
+      <!-- 预约试驾的三个模态框 -->
+
+      <div v-if="intention === '预约试驾'" class="x">
+        <Collapse v-model="value" accordion >
+                    <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
+                        {{ `${item.sname}(${item.saddress})` }}
+                        <p slot="content" class="x_mid">
+                          <DatePicker type="date" placeholder="Select date" style="width: 200px"></DatePicker>
+                        </p>
+                    </Panel>
+        </Collapse>
+      </div>
     </div>
 
 </template>
@@ -47,29 +76,90 @@
 <script>
 import { mapActions } from 'vuex'
 
+// 四张卡牌的信息
+const cards = [
+  {
+    title: '补贴政策查询',
+    imgUrl: 'btzc'
+  },
+  {
+    title: '预约试驾',
+    imgUrl: 'yysj'
+  },
+  {
+    title: '领界纯电价格',
+    imgUrl: 'ljjg'
+  },
+  {
+    title: '上海车展',
+    imgUrl: 'gnc2'
+  }
+]
+
+// 城市信息
+const citys = [
+  { cityName: '上海', id: '001' },
+  { cityName: '北京', id: '002' },
+  { cityName: '天津', id: '003' },
+  { cityName: '杭州', id: '004' },
+  { cityName: '广州', id: '005' },
+  { cityName: '深圳', id: '006' },
+  { cityName: '其它', id: '007' }
+]
+
 export default {
   props: {
     side: {
       type: String,
       default: 'left'
     },
-    text: {
+    msg: {
       type: String
     },
     type: {
       type: String,
       default: 'text'
+    },
+    intention: {
+      type: String,
+      default: 'default'
+    },
+    s1: {
+      type: String
+    },
+    s2: {
+      type: String
+    },
+    comma: {
+      type: String
+    },
+    location: {
+      type: String
+    },
+    carShopInfo: {
+      type: Array
     }
   },
   data () {
-    return {}
+    return {
+      cards: cards,
+      citys: citys,
+      value: '0'
+    }
   },
   methods: {
-    ...mapActions(['setInputValue', 'submit']),
+    ...mapActions(['setInputValue', 'submit', 'updateDialogValue']),
 
-    handleBTZC () {
-      this.setInputValue('补贴')
-      this.submit('补贴政策查询')
+    handleCardsClick (data) {
+      this.setInputValue(data)
+      this.submit(data)
+    },
+
+    // 更改城市
+    handleSelectCity (e) {
+      console.log('e =', e)
+      this.setInputValue(`${e}`)
+      this.submit(`${e}`)
     }
   }
 }
@@ -78,6 +168,11 @@ export default {
 <style lang="less">
 @left-bg: #fff;
 @right-bg: #b2e281;
+
+.x_mid {
+  display: flex;
+  justify-content: center;
+}
 
 .base-style {
   display: flex;
@@ -96,11 +191,17 @@ export default {
     // text-align: center;
     position: relative;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     padding: 0 10px;
     border-radius: 4px;
+    font-size: 14px;
 
     .text {
+      .ivu-dropdown-rel {
+        // margin-left: -20px;
+      }
     }
 
     .arrow {
@@ -119,6 +220,7 @@ export default {
   .content {
     box-shadow: -3px 3px 7px rgba(0, 0, 0, 0.07);
     background-color: @left-bg;
+    max-width: 500px;
   }
 
   .arrow {
@@ -187,5 +289,10 @@ export default {
       padding: 0;
     }
   }
+}
+
+.x {
+  margin-left: 68px;
+  width: 70%;
 }
 </style>

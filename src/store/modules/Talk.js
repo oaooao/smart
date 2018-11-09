@@ -3,7 +3,11 @@ import { query, getWeatherAndLocation } from '../../api/views/Talk'
 const state = {
   userId: undefined, // 用户身份标识
   dialog: [
-    { side: 'left', text: '您好，我是AI助理福小兔，很高兴为您服务～' },
+    {
+      side: 'left',
+      msg: '您好，我是AI助理福小兔，很高兴为您服务～',
+      type: 'text'
+    },
     { type: 'card' }
   ], // 对话数据
   value: '', // 当前输入框的值
@@ -23,8 +27,8 @@ const mutations = {
   },
 
   // 更新对话框的数据
-  SET_DIALOG_VALUE: (state, { side, text }) => {
-    state.dialog.push({ side, text })
+  SET_DIALOG_VALUE: (state, obj) => {
+    state.dialog.push(obj)
   },
 
   // 更新userId
@@ -41,20 +45,21 @@ const mutations = {
 }
 
 const actions = {
-  // 输入
-  setInputValue: ({ commit }, value) => {
-    commit('SET_INPUT_VALUE', value)
-  },
+  // 更新输入内容
+  setInputValue: ({ commit }, value) => commit('SET_INPUT_VALUE', value),
+
+  // 更新对话框内容
+  updateDialogValue: ({ commit }, { side, msg, type }) =>
+    commit('SET_DIALOG_VALUE', { side, msg, type }),
 
   // 提交
   submit: ({ commit, state, dispatch }, payload) => {
-    const value = payload || state.value
-    commit('SET_DIALOG_VALUE', {
-      side: 'right',
-      text: value
-    })
+    const msg = payload || state.value
+    // 1.更新对话框内容
+    commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
+    // 2.调用AI接口，并呈递回答
     dispatch('api_query')
-    dispatch('api_weather')
+    // 3.清空输入框
     commit('SET_INPUT_VALUE', '')
   },
 
@@ -69,18 +74,12 @@ const actions = {
     const params = { query: state.value }
     // http请求
     const res = await query(params)
-
-    // const test = await getLocation('')
-
-    // console.log('test =', test)
     // 格式化数据
     const apiData = res.data
+
     console.log('apiData =', apiData)
-    // 更新State
-    commit('SET_DIALOG_VALUE', {
-      side: 'left',
-      text: apiData
-    })
+    // 把AI的回复内容添加至State
+    commit('SET_DIALOG_VALUE', apiData)
   },
 
   // 请求天气
@@ -101,6 +100,8 @@ const actions = {
     console.log('apiData =', apiData)
   }
 }
+
+// const api_query = () => {}
 
 export default {
   state,
