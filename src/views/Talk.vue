@@ -20,17 +20,10 @@
 
                 <div id="dialog-wrapper" :style="{ position: position }">
                     <Ford-dialog
-                        v-for="(item, index) in dialog"
+                        v-for="(dialog, index) in dialogs"
+                        :dialog="dialog"
                         :key="index"
-                        :msg="item.msg"
-                        :s1="item.s1"
-                        :s2="item.s2"
-                        :carShopInfo="item.carShopInfo"
-                        :location="item.location"
-                        :intention="item.intention"
-                        :comma="item.comma"
-                        :side="item.side"
-                        :type="item.type"
+                        :carShopInfo="dialog.carShopInfo"
                     />
                 </div>
 
@@ -86,7 +79,7 @@ export default {
   computed: {
     ...mapState({
       Talk: state => state.Talk,
-      dialog: state => state.Talk.dialog,
+      dialogs: state => state.Talk.dialog,
       userInfo: state => state.Talk.userInfo
     }),
 

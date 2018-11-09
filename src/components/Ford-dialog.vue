@@ -2,12 +2,12 @@
     <div>
       <!-- 文字对话内容 -->
 
-      <div v-bind:class="['dialog-' + side]" v-if="type === 'text'">
+      <div v-bind:class="['dialog-' + dialog.side]" v-if="dialog.type === 'text'">
           <!-- 头像 -->
 
           <div class="avatar">
               <!-- 机器人头像 -->
-              <img v-if="side === 'left'" src="@/assets/images/fordLogo.png" alt="">
+              <img v-if="dialog.side === 'left'" src="@/assets/images/fordLogo.png" alt="">
               <!-- 用户头像 -->
               <img v-else src="@/assets/wx-icon.jpeg" alt="">
           </div>
@@ -16,30 +16,30 @@
 
           <div class="content">
               <!-- 默认意图 -->
-              <div class="text" v-if="intention === 'default'">
-                  {{ msg }}
-                  <!-- 根据GPS定位，您当前所在位置为: <span class="location">上海[更改]</span>,
+              <div class="text" v-if="!dialog.intention">
+                  {{ dialog.msg }}
+                  <!-- 根据GPS定位，您当前所在位置为: <span class="dialog.location">上海[更改]</span>,
                   国补的金额会根据电池密度和续航里程等不同而有所区别，以福特汽车旗下的Territory纯电动车为例，国补金额为45000元。上海地补金额对于纯电动车按照国补50%补助，所以地补金额为225000元。补贴金额总计67500元。 -->
               </div>
               <!-- 补贴意图 -->
-              <div class="text" v-else-if="intention === '补贴' || intention === '预约试驾'">
-                  <!-- {{ s1 + location + ',' + s2 + msg }} -->
+              <div class="text" v-else-if="dialog.intention === '补贴' || dialog.intention === '预约试驾'">
+                  <!-- {{ dialog.s1 + dialog.location + ',' + dialog.s2 + dialog.msg }} -->
                   <span>
-                    {{ s1 }}
+                    {{ dialog.s1 }}
                   </span>
                   <!-- 城市选择 -->
-                  <Dropdown v-if="!msg" trigger="click" @on-click="handleSelectCity">
+                  <Dropdown v-if="!dialog.msg" trigger="click" @on-click="handleSelectCity">
                       <Button type="info" size="small">
-                          {{ location }}
+                          {{ dialog.location }}
                           <Icon type="ios-arrow-down"></Icon>
                       </Button>
 
                       <DropdownMenu slot="list" v-for="item in citys" :key="item.id">
-                        <DropdownItem :name="item.cityName" :disabled="location===item.cityName">{{item.cityName}}</DropdownItem>
+                        <DropdownItem :name="item.cityName" :disabled="dialog.location===item.cityName">{{item.cityName}}</DropdownItem>
                       </DropdownMenu>
                   </Dropdown>
                   <span>
-                    {{comma + s2 + msg}}
+                    {{dialog.comma + dialog.s2 + dialog.msg}}
                   </span>
               </div>
               <!-- 对话框箭头 -->
@@ -50,7 +50,7 @@
 
       <!-- FAQ知识卡片 -->
 
-      <div v-else-if="type === 'card'" class="card">
+      <div v-else-if="dialog.type === 'card'" class="card">
         <Card v-for="item in cards" :key="item.id" >
           <p slot="title">{{ item.title }}</p>
           <img :src="require(`@/assets/images/${item.imgUrl}.jpg`)" alt="" @click="handleCardsClick(item.title)">
@@ -59,7 +59,7 @@
 
       <!-- 预约试驾的三个模态框 -->
 
-      <div v-if="intention === '预约试驾'" class="x">
+      <div v-if="dialog.intention === '预约试驾'" class="x">
         <Collapse v-model="value" accordion >
                     <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
                         {{ `${item.sname}(${item.saddress})` }}
@@ -109,35 +109,14 @@ const citys = [
 
 export default {
   props: {
-    side: {
-      type: String,
-      default: 'left'
-    },
-    msg: {
-      type: String
-    },
-    type: {
-      type: String,
-      default: 'text'
-    },
-    intention: {
-      type: String,
-      default: 'default'
-    },
-    s1: {
-      type: String
-    },
-    s2: {
-      type: String
-    },
-    comma: {
-      type: String
-    },
     location: {
       type: String
     },
     carShopInfo: {
       type: Array
+    },
+    dialog: {
+      type: Object
     }
   },
   data () {
