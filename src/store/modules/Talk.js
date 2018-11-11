@@ -1,4 +1,5 @@
 import { query, getWeatherAndLocation } from '../../api/views/Talk'
+// import Vue from 'vue'
 
 const state = {
   userId: undefined, // 用户身份标识
@@ -15,7 +16,9 @@ const state = {
     weather: '', // 天气
     location: '', // 位置
     temperature: '' // 温度
-  }
+  },
+  dropdownValue: '0',
+  dateFlag: false // 控制日期框的旗帜
 }
 
 const getters = {}
@@ -36,11 +39,21 @@ const mutations = {
     state.userId = value
   },
 
+  // 更新dateFlag
+  SET_DATEFLAG: (state, value) => {
+    state.dateFlag = value
+  },
+
   // 更新天气和位置
   SET_WEATHER_LOCATION: (state, { weather, location, temperature }) => {
     state.userInfo.weather = weather
     state.userInfo.location = location
     state.userInfo.temperature = temperature
+  },
+
+  // 更新
+  SET_DROPDOWN_VALUE: (state, value) => {
+    state.dropdownValue = value
   }
 }
 
@@ -54,12 +67,12 @@ const actions = {
 
   // 提交
   submit: ({ commit, state, dispatch }, payload) => {
-    console.log('submit run')
-    const msg = payload || state.value
+    const { value } = state
+    const msg = payload || value
     // 1.更新对话框内容
     commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
-    // 2.调用AI接口，并呈递回答
-    dispatch('api_query')
+    // 2.调用AI接口，并呈递回答，再次更新对话框内容
+    dispatch('api_query', msg)
     // 3.清空输入框
     commit('SET_INPUT_VALUE', '')
   },
@@ -70,16 +83,12 @@ const actions = {
   },
 
   // 把用户问题发送给后端
-  api_query: async ({ commit, state }) => {
-    // 入参
-    const params = { query: state.value }
-    // http请求
-    const res = await query(params)
-    // 格式化数据
-    const apiData = res.data
-
+  api_query: async ({ commit, state }, question) => {
+    // Http请求
+    const apiData = await api_query(question)
+    // test
     console.log('apiData =', apiData)
-    // 把AI的回复内容添加至State
+    // 把AI的回复内容添加至State中的dialog字段,用来更新UI
     commit('SET_DIALOG_VALUE', apiData)
   },
 
@@ -99,19 +108,37 @@ const actions = {
     commit('SET_WEATHER_LOCATION', apiData)
 
     console.log('apiData =', apiData)
+  },
+
+  dateForbid: ({ commit }, value) => {
+    commit('SET_DATEFLAG', value)
+  },
+
+  setDropdownValue: ({ commit }, value) => {
+    commit('SET_DROPDOWN_VALUE', value)
   }
 }
 
-// const api_query = async value => {
-//   // 入参
-//   const params = { qurey: value }
-//   // http请求
-//   const res = await query(params)
-//   // 格式化数据
-//   const apiData = res.data
-//   // 返回目标数据
-//   return apiData
-// }
+// eslint-disable-next-line
+const api_query = async value => {
+  // 入参
+  const params = { query: value }
+  // http请求
+  const res = await query(params)
+  // 格式化数据
+  let apiData = res.data
+
+  if (apiData.action === 'give_me_city') {
+    const newRes = await query({
+      query: '上海市'
+    })
+    apiData = newRes.data
+  }
+
+  // apiData.action === 'give_me_city'
+  // 返回目标数据
+  return apiData
+}
 
 export default {
   state,

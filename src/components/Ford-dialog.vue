@@ -2,7 +2,7 @@
     <div>
       <!-- 文字对话内容 -->
 
-      <div v-bind:class="['dialog-' + dialog.side]" v-if="dialog.type === 'text' || !dialog.type">
+      <div v-bind:class="['dialog-' + dialog.side]" v-if="dialog.side && (dialog.type === 'text' || !dialog.type)">
           <!-- 头像 -->
 
           <div class="avatar">
@@ -59,8 +59,8 @@
 
       <!-- 预约试驾的三个模态框 -->
 
-      <div v-if="dialog.intention === '预约试驾'" class="x">
-        <Collapse v-model="value" accordion >
+      <div v-if="dialog.side && dialog.intention === '预约试驾'" class="x">
+        <Collapse v-model="dropdownValue" accordion >
                     <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
                         {{ `${item.sname}(${item.saddress})` }}
                         <p slot="content" class="x_mid">
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import FordDatePicke from './Ford-DatePicker'
 
 // 四张卡牌的信息
@@ -100,13 +100,13 @@ const cards = [
 
 // 城市信息
 const citys = [
-  { cityName: '上海', id: '001' },
-  { cityName: '北京', id: '002' },
-  { cityName: '天津', id: '003' },
-  { cityName: '杭州', id: '004' },
-  { cityName: '广州', id: '005' },
-  { cityName: '深圳', id: '006' },
-  { cityName: '其它', id: '007' }
+  { cityName: '上海市', id: '001' },
+  { cityName: '北京市', id: '002' },
+  { cityName: '天津市', id: '003' },
+  { cityName: '杭州市', id: '004' },
+  { cityName: '广州市', id: '005' },
+  { cityName: '深圳市', id: '006' },
+  { cityName: '其他城市', id: '007' }
 ]
 
 export default {
@@ -124,11 +124,31 @@ export default {
       type: Object
     }
   },
+  updated () {
+    // setTimeout(() => {
+    document.getElementById('dialog-wrapper').lastElementChild.scrollIntoView()
+    // }, 500)
+  },
+  computed: {
+    ...mapState({
+      Talk: state => state.Talk
+    }),
+
+    // 控制三个4S店折叠面板的Value
+    dropdownValue: {
+      get () {
+        return this.Talk.dropdownValue
+      },
+      set (v) {
+        this.setDropdownValue(v)
+      }
+    }
+  },
   data () {
     return {
       cards: cards,
       citys: citys,
-      value: '0',
+      value: '-1',
       options: {
         disabledDate (date) {
           return date && date.valueOf() < Date.now() - 86400000
@@ -137,7 +157,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setInputValue', 'submit', 'updateDialogValue']),
+    ...mapActions(['setInputValue', 'submit', 'updateDialogValue', 'setDropdownValue']),
 
     handleCardsClick (data) {
       this.setInputValue(data)
@@ -147,8 +167,9 @@ export default {
     // 更改城市
     handleSelectCity (e) {
       console.log('e =', e)
-      this.setInputValue(`${e}`)
-      this.submit(`${e}`)
+      // this.setInputValue(`${e}`)
+      // this.submit(`${e}`)
+      this.submit(e)
     }
   }
 }

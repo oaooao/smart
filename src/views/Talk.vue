@@ -116,11 +116,16 @@ export default {
     handleMouseover (e) {
       console.log('滑上来了')
       this.position = 'inherit'
-      setTimeout(() => {
+      this.$nextTick(() => {
         document
           .getElementById('dialog-wrapper')
           .lastElementChild.scrollIntoView()
-      }, 300)
+      })
+      // setTimeout(() => {
+      //   document
+      //     .getElementById('dialog-wrapper')
+      //     .lastElementChild.scrollIntoView()
+      // }, 300)
     },
 
     handleMouseout (e) {
@@ -133,7 +138,15 @@ export default {
 
     handleSubmit (e) {
       this.submit()
+
       this.position = 'absolute'
+
+      this.$nextTick(() => {
+        document
+          .getElementById('dialog-wrapper')
+          .lastElementChild.scrollIntoView()
+      })
+
       const obj = document.getElementById('show')
       // window.location.hash = '#end'
       // obj.scrollTop = obj.scrollHeight

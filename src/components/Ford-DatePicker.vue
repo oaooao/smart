@@ -13,6 +13,9 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+// import { method } from 'bluebird'
+
 export default {
   props: {
     unavailableDate: {
@@ -22,13 +25,15 @@ export default {
   created () {
     // console.log(this.unavailableDate)
   },
+  methods: {
+    ...mapActions(['api_query', 'dateForbid'])
+  },
   data () {
     return {
       xDate: this.unavailableDate,
-      flag: false,
+      // flag: false,
       options: {
         disabledDate: date => {
-          console.log('test =', this.xDate)
           const { year, month, date: day } = this.xDate
           const xDay = date.getDate()
           const xMonth = date.getMonth() + 1
@@ -41,11 +46,18 @@ export default {
           return this.flag || judge
         }
       },
-      handlePickDate (a, b) {
+      handlePickDate: (a, b) => {
         console.log('a =', a)
         console.log('b =', b)
+        this.dateForbid(true)
+        this.api_query(a)
       }
     }
+  },
+  computed: {
+    ...mapState({
+      flag: state => state.Talk.dateFlag
+    })
   }
 }
 </script>
