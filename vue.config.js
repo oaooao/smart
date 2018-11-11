@@ -3,8 +3,8 @@ module.exports = {
     proxy: {
       '/robot': {
         target: 'http://172.20.10.4:9090',
-        changeOrigin: true,
-        ws: true
+        changeOrigin: true
+        // ws: true
       }
     }
   },

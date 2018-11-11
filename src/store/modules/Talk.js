@@ -67,9 +67,14 @@ const actions = {
   // 提交
   submit: ({ commit, state, dispatch }, payload) => {
     const { value, location } = state
-    const msg = payload || value
+
+    let msg = payload || value
     // 1.更新对话框内容
     commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
+
+    // 特例
+    msg = msg === '其他城市' && '合肥市'
+
     // 2.调用AI接口，并呈递回答，再次更新对话框内容
     dispatch('api_query', { value: msg, location })
     // 3.清空输入框

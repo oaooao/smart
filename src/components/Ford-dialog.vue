@@ -28,7 +28,10 @@
                     {{ dialog.s1 }}
                   </span>
                   <!-- 城市选择 -->
-                  <Dropdown v-if="!dialog.msg" trigger="click" @on-click="handleSelectCity">
+
+                  <Ford-CityPicker :msg="dialog.msg" :location="dialog.location"></Ford-CityPicker>
+
+                  <!-- <Dropdown v-if="!dialog.msg" trigger="click" @on-click="handleSelectCity">
                       <Button type="info" size="small">
                           {{ dialog.location }}
                           <Icon type="ios-arrow-down"></Icon>
@@ -37,7 +40,7 @@
                       <DropdownMenu slot="list" v-for="item in citys" :key="item.id">
                         <DropdownItem :name="item.cityName" :disabled="dialog.location===item.cityName">{{item.cityName}}</DropdownItem>
                       </DropdownMenu>
-                  </Dropdown>
+                  </Dropdown> -->
                   <span>
                     {{dialog.comma + dialog.s2 + dialog.msg}}
                   </span>
@@ -65,7 +68,7 @@
                         {{ `${item.sname}(${item.saddress})` }}
                         <p slot="content" class="x_mid">
                           <!-- <DatePicker type="date" placeholder="请选择预约日期" style="width: 240px" size="large" :options="options"></DatePicker> -->
-                          <Ford-DatePicke :unavailableDate="item.unavailable_date" :sname_id="item.sname_id"></Ford-DatePicke>
+                          <Ford-DatePicker :unavailableDate="item.unavailable_date" :sname_id="item.sname_id"></Ford-DatePicker>
                         </p>
                     </Panel>
         </Collapse>
@@ -76,7 +79,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import FordDatePicke from './Ford-DatePicker'
+import FordDatePicker from './Ford-DatePicker'
+import FordCityPicker from './Ford-CityPicker'
 
 // 四张卡牌的信息
 const cards = [
@@ -111,7 +115,8 @@ const citys = [
 
 export default {
   components: {
-    'Ford-DatePicke': FordDatePicke
+    'Ford-DatePicker': FordDatePicker,
+    'Ford-CityPicker': FordCityPicker
   },
   props: {
     location: {
@@ -124,7 +129,7 @@ export default {
       type: Object
     }
   },
-  updated () {
+  updated() {
     // setTimeout(() => {
     document.getElementById('dialog-wrapper').lastElementChild.scrollIntoView()
     // }, 500)
@@ -136,21 +141,21 @@ export default {
 
     // 控制三个4S店折叠面板的Value
     dropdownValue: {
-      get () {
+      get() {
         return this.Talk.dropdownValue
       },
-      set (v) {
+      set(v) {
         this.setDropdownValue(v)
       }
     }
   },
-  data () {
+  data() {
     return {
       cards: cards,
       citys: citys,
       value: '-1',
       options: {
-        disabledDate (date) {
+        disabledDate(date) {
           return date && date.valueOf() < Date.now() - 86400000
         }
       }
@@ -164,13 +169,13 @@ export default {
       'setDropdownValue'
     ]),
 
-    handleCardsClick (data) {
+    handleCardsClick(data) {
       this.setInputValue(data)
       this.submit(data)
     },
 
     // 更改城市
-    handleSelectCity (e) {
+    handleSelectCity(e) {
       console.log('e =', e)
       // this.setInputValue(`${e}`)
       // this.submit(`${e}`)
