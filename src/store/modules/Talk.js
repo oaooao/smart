@@ -1,5 +1,4 @@
-import { query, getWeatherAndLocation } from '../../api/views/Talk'
-// import Vue from 'vue'
+import { query, getWeatherAndLocation, setShopData } from '../../api/views/Talk'
 
 const state = {
   userId: undefined, // 用户身份标识
@@ -67,12 +66,12 @@ const actions = {
 
   // 提交
   submit: ({ commit, state, dispatch }, payload) => {
-    const { value } = state
+    const { value, location } = state
     const msg = payload || value
     // 1.更新对话框内容
     commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
     // 2.调用AI接口，并呈递回答，再次更新对话框内容
-    dispatch('api_query', msg)
+    dispatch('api_query', { value: msg, location })
     // 3.清空输入框
     commit('SET_INPUT_VALUE', '')
   },
@@ -83,9 +82,10 @@ const actions = {
   },
 
   // 把用户问题发送给后端
-  api_query: async ({ commit, state }, question) => {
+  api_query: async ({ commit, state }, { value, location }) => {
+    const xLocation = location || state.userInfo.location
     // Http请求
-    const apiData = await api_query(question)
+    const apiData = await api_query({ value, location: xLocation })
     // test
     console.log('apiData =', apiData)
     // 把AI的回复内容添加至State中的dialog字段,用来更新UI
@@ -110,17 +110,22 @@ const actions = {
     console.log('apiData =', apiData)
   },
 
+  api_setShopData: async ({ commit }, data) => {
+    setShopData(data)
+  },
+
   dateForbid: ({ commit }, value) => {
     commit('SET_DATEFLAG', value)
   },
 
-  setDropdownValue: ({ commit }, value) => {
+  // 开关折叠面板
+  togglePanel: ({ commit }, value) => {
     commit('SET_DROPDOWN_VALUE', value)
   }
 }
 
 // eslint-disable-next-line
-const api_query = async value => {
+const api_query = async ({ value, location }) => {
   // 入参
   const params = { query: value }
   // http请求
@@ -130,15 +135,18 @@ const api_query = async value => {
 
   if (apiData.action === 'give_me_city') {
     const newRes = await query({
-      query: '上海市'
+      query: location
     })
     apiData = newRes.data
   }
-
-  // apiData.action === 'give_me_city'
   // 返回目标数据
   return apiData
 }
+
+// eslint-disable-next-line
+// const api_setShopData = async({  }) => {
+
+// }
 
 export default {
   state,

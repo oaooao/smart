@@ -15,10 +15,14 @@ const getLocation = data => http('/getLocation', data)
 // 天气
 const getWeatherAndLocation = data => http('/getWeatherAndLocation', data)
 
+// 上传4s店信息
+const setShopData = data => http('/setShopsData', data)
+
 export {
   getChatRecord,
   updateChatRecord,
   query,
   getLocation,
-  getWeatherAndLocation
+  getWeatherAndLocation,
+  setShopData
 }

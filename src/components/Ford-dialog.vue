@@ -21,7 +21,7 @@
                   <!-- 根据GPS定位，您当前所在位置为: <span class="dialog.location">上海[更改]</span>,
                   国补的金额会根据电池密度和续航里程等不同而有所区别，以福特汽车旗下的Territory纯电动车为例，国补金额为45000元。上海地补金额对于纯电动车按照国补50%补助，所以地补金额为225000元。补贴金额总计67500元。 -->
               </div>
-              <!-- 补贴意图 -->
+              <!-- 预约试驾意图 -->
               <div class="text" v-else-if="dialog.intention === '补贴' || dialog.intention === '预约试驾'">
                   <!-- {{ dialog.s1 + dialog.location + ',' + dialog.s2 + dialog.msg }} -->
                   <span>
@@ -65,7 +65,7 @@
                         {{ `${item.sname}(${item.saddress})` }}
                         <p slot="content" class="x_mid">
                           <!-- <DatePicker type="date" placeholder="请选择预约日期" style="width: 240px" size="large" :options="options"></DatePicker> -->
-                          <Ford-DatePicke :unavailableDate="item.unavailable_date"></Ford-DatePicke>
+                          <Ford-DatePicke :unavailableDate="item.unavailable_date" :sname_id="item.sname_id"></Ford-DatePicke>
                         </p>
                     </Panel>
         </Collapse>
@@ -157,7 +157,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setInputValue', 'submit', 'updateDialogValue', 'setDropdownValue']),
+    ...mapActions([
+      'setInputValue',
+      'submit',
+      'updateDialogValue',
+      'setDropdownValue'
+    ]),
 
     handleCardsClick (data) {
       this.setInputValue(data)

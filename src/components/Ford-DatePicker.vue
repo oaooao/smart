@@ -20,13 +20,16 @@ export default {
   props: {
     unavailableDate: {
       type: Object
+    },
+    sname_id: {
+      type: String
     }
   },
   created () {
     // console.log(this.unavailableDate)
   },
   methods: {
-    ...mapActions(['api_query', 'dateForbid'])
+    ...mapActions(['api_query', 'dateForbid', 'togglePanel', 'api_setShopData'])
   },
   data () {
     return {
@@ -46,11 +49,20 @@ export default {
           return this.flag || judge
         }
       },
-      handlePickDate: (a, b) => {
-        console.log('a =', a)
-        console.log('b =', b)
+      handlePickDate: async (date, b) => {
+        // const sname_id = this.sname_id
+        // const pickedDate = new Date(date)
+        // const year = pickedDate.getFullYear()
+        // const month = pickedDate.getMonth() + 1
+        // const day = pickedDate.getDate()
+
         this.dateForbid(true)
-        this.api_query(a)
+
+        this.togglePanel('-1')
+
+        await this.api_query({ value: date })
+
+        // this.api_setShopData({ sname_id, year, month, day })
       }
     }
   },
