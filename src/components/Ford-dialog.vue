@@ -2,7 +2,7 @@
     <div>
       <!-- 文字对话内容 -->
 
-      <div v-bind:class="['dialog-' + dialog.side]" v-if="dialog.type === 'text'">
+      <div v-bind:class="['dialog-' + dialog.side]" v-if="dialog.type === 'text' || !dialog.type">
           <!-- 头像 -->
 
           <div class="avatar">
@@ -64,7 +64,8 @@
                     <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
                         {{ `${item.sname}(${item.saddress})` }}
                         <p slot="content" class="x_mid">
-                          <DatePicker type="date" placeholder="请选择预约日期" style="width: 240px" size="large" :options="options"></DatePicker>
+                          <!-- <DatePicker type="date" placeholder="请选择预约日期" style="width: 240px" size="large" :options="options"></DatePicker> -->
+                          <Ford-DatePicke :unavailableDate="item.unavailable_date"></Ford-DatePicke>
                         </p>
                     </Panel>
         </Collapse>
@@ -75,6 +76,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import FordDatePicke from './Ford-DatePicker'
 
 // 四张卡牌的信息
 const cards = [
@@ -108,6 +110,9 @@ const citys = [
 ]
 
 export default {
+  components: {
+    'Ford-DatePicke': FordDatePicke
+  },
   props: {
     location: {
       type: String

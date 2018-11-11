@@ -54,6 +54,7 @@ const actions = {
 
   // 提交
   submit: ({ commit, state, dispatch }, payload) => {
+    console.log('submit run')
     const msg = payload || state.value
     // 1.更新对话框内容
     commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
@@ -101,7 +102,16 @@ const actions = {
   }
 }
 
-// const api_query = () => {}
+// const api_query = async value => {
+//   // 入参
+//   const params = { qurey: value }
+//   // http请求
+//   const res = await query(params)
+//   // 格式化数据
+//   const apiData = res.data
+//   // 返回目标数据
+//   return apiData
+// }
 
 export default {
   state,
