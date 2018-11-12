@@ -6,30 +6,13 @@
 
 <script>
 import Talk from './views/Talk'
-import { mapActions } from 'vuex'
-import Cookies from 'js-cookie'
+import userId from '@/utils/verify.js'
 
 export default {
   name: 'app',
-
   components: { Talk },
-
-  created () {
-    let userId = Cookies.get('userId')
-
-    if (!userId) {
-      let randomNum = Math.floor(Math.random() * 10 ** 16)
-
-      userId = `ford${randomNum}`
-
-      Cookies.set('userId', userId, { expires: 7 })
-    }
-
-    this.set_userId(userId)
-  },
-
-  methods: {
-    ...mapActions(['set_userId'])
+  created() {
+    this.$store.dispatch('set_userId', userId)
   }
 }
 </script>

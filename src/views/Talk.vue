@@ -1,9 +1,15 @@
+/*
+ * @Author: Tom
+ * @Date: 2018-11-12 19:58:29
+ * @Last Modified by: Tom
+ * @Last Modified time: 2018-11-12 20:02:56
+ */
+
 <template>
     <div class="talk">
         <div class="wrapper">
 
             <header id="title">
-                <!-- <h3>欢迎使用福特答疑小管家</h3> -->
                 <div class="logo">
                   <img src="@/assets/images/Ford.png" alt="">
                 </div>
@@ -17,7 +23,6 @@
             </header>
 
             <section id="show" @mouseenter="handleMouseover" @mouseout="handleMouseout" @scroll="handleScroll">
-
                 <div id="dialog-wrapper" :style="{ position: position }">
                     <Ford-dialog
                         v-for="(dialog, index) in dialogs"
@@ -26,11 +31,9 @@
                         :carShopInfo="dialog.carShopInfo"
                     />
                 </div>
-
             </section>
 
             <footer id="footer">
-
                 <div class="input">
                     <Input
                         autofocus
@@ -52,7 +55,6 @@
                         发送
                     </Button>
                 </div>
-
             </footer>
 
         </div>
@@ -230,6 +232,7 @@ export default {
         }
 
         .location {
+          box-sizing: border-box;
         }
 
         .location-logo {
@@ -266,6 +269,7 @@ export default {
       position: relative;
 
       .input {
+        box-sizing: border-box;
       }
 
       .control {
