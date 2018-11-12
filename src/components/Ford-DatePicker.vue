@@ -25,13 +25,13 @@ export default {
       type: String
     }
   },
-  created () {
+  created() {
     // console.log(this.unavailableDate)
   },
   methods: {
     ...mapActions(['api_query', 'dateForbid', 'togglePanel', 'api_setShopData'])
   },
-  data () {
+  data() {
     return {
       xDate: this.unavailableDate,
       // flag: false,
@@ -73,8 +73,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-.ford-datePicker {
-}
-</style>
