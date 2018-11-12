@@ -66,11 +66,11 @@ import { mapState, mapActions } from 'vuex'
 export default {
   components: { FordDialog },
 
-  created () {
+  created() {
     this.api_weather()
   },
 
-  data () {
+  data() {
     return {
       position: 'absolute'
     }
@@ -84,15 +84,15 @@ export default {
     }),
 
     value: {
-      set (value) {
+      set(value) {
         this.setInputValue(value)
       },
-      get () {
+      get() {
         return this.Talk.value
       }
     },
 
-    weather_condition () {
+    weather_condition() {
       const { weather } = this.userInfo
       if (weather.includes('雪')) {
         return 'xue'
@@ -113,7 +113,7 @@ export default {
   methods: {
     ...mapActions(['setInputValue', 'submit', 'api_weather']),
 
-    handleMouseover (e) {
+    handleMouseover(e) {
       console.log('滑上来了')
       this.position = 'inherit'
       this.$nextTick(() => {
@@ -128,15 +128,15 @@ export default {
       // }, 300)
     },
 
-    handleMouseout (e) {
+    handleMouseout(e) {
       // this.position = 'absolute'
     },
 
-    handleScroll (e) {
+    handleScroll(e) {
       // this.position = 'initial'
     },
 
-    handleSubmit (e) {
+    handleSubmit(e) {
       this.submit()
 
       this.position = 'absolute'
@@ -161,7 +161,7 @@ export default {
 
 <style lang="less">
 .talk {
-  margin-top: 60px;
+  // margin-top: 60px;
   display: flex;
   justify-content: center;
 
@@ -227,12 +227,16 @@ export default {
     #show {
       border-top: 1px solid #d6d6d6;
       width: 100%;
-      height: 500px;
+      // TODO 移动版
+      // height: 500px;
+      height: 390px;
       overflow-y: auto;
       position: relative;
 
       #dialog-wrapper {
-        min-height: 500px;
+        // TODO 移动版
+        // min-height: 500px;
+        min-height: 390px;
         width: 100%;
         bottom: 0;
         left: 0;

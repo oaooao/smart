@@ -6,8 +6,9 @@ import jsonToQuery from '../../utils/jsonToQuery'
 // 构建axios实例
 const axiosInstance = axios.create({
   // baseURL: 'http://172.20.10.8:9090/robot',
-  baseURL: 'http://172.20.10.4:9090/robot',
-  withCredentials: false
+  // baseURL: 'http://172.20.10.4:9090/robot',
+  baseURL: '/robot'
+  // withCredentials: false
 })
 
 // 请求拦截器
