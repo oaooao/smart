@@ -9,7 +9,8 @@ import {
   DropdownItem,
   DatePicker,
   Collapse,
-  Panel
+  Panel,
+  Table
 } from 'iview'
 
 import './index.less'
@@ -25,3 +26,4 @@ Vue.component('DropdownItem', DropdownItem)
 Vue.component('DatePicker', DatePicker)
 Vue.component('Collapse', Collapse)
 Vue.component('Panel', Panel)
+Vue.component('Table', Table)
