@@ -1,6 +1,7 @@
 import { query, getWeatherAndLocation, setShopData } from '../../api/views/Talk'
 
 const state = {
+  position: 'absolute',
   userId: undefined, // 用户身份标识
   dialog: [
     {
@@ -53,6 +54,11 @@ const mutations = {
   // 更新
   SET_DROPDOWN_VALUE: (state, value) => {
     state.dropdownValue = value
+  },
+
+  //
+  SET_POSITION: (state, value) => {
+    state.position = value
   }
 }
 
@@ -126,6 +132,11 @@ const actions = {
   // 开关折叠面板
   togglePanel: ({ commit }, value) => {
     commit('SET_DROPDOWN_VALUE', value)
+  },
+
+  // position
+  setPosition: ({ commit }, value) => {
+    commit('SET_POSITION', value)
   }
 }
 

@@ -129,6 +129,15 @@ export default {
       Talk: state => state.Talk
     }),
 
+    position: {
+      set(value) {
+        this.setPosition(value)
+      },
+      get() {
+        return this.Talk.position
+      }
+    },
+
     // 控制三个4S店折叠面板的Value
     dropdownValue: {
       get() {
@@ -167,12 +176,24 @@ export default {
       'setInputValue',
       'submit',
       'updateDialogValue',
-      'setDropdownValue'
+      'setDropdownValue',
+      'setPosition'
     ]),
 
     handleCardsClick(data) {
       this.setInputValue(data)
       this.submit(data)
+      this.$nextTick(() => {
+        this.position = 'absolute'
+        document
+          .getElementById('dialog-wrapper')
+          .lastElementChild.scrollIntoView()
+      })
+      const obj = document.getElementById('show')
+      console.log(
+        '滚到底了吗',
+        obj.scrollHeight - obj.scrollTop === obj.clientHeight
+      )
     }
   }
 }

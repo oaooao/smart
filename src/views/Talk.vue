@@ -72,7 +72,7 @@ export default {
 
   data() {
     return {
-      position: 'absolute'
+      // position: 'absolute'
     }
   },
 
@@ -82,6 +82,15 @@ export default {
       dialogs: state => state.Talk.dialog,
       userInfo: state => state.Talk.userInfo
     }),
+
+    position: {
+      set(value) {
+        this.setPosition(value)
+      },
+      get() {
+        return this.Talk.position
+      }
+    },
 
     value: {
       set(value) {
@@ -111,7 +120,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setInputValue', 'submit', 'api_weather']),
+    ...mapActions(['setInputValue', 'submit', 'api_weather', 'setPosition']),
 
     handleMouseover(e) {
       console.log('滑上来了')
@@ -176,7 +185,12 @@ export default {
     transition: all 1s;
 
     #title {
+      // TODO: 移动版
+      // position: fixed;
+      // z-index: 1000;
       width: 100%;
+      // width: 700px;
+
       height: 75px;
       line-height: 50px;
       background-color: #36404d;
@@ -227,16 +241,21 @@ export default {
     #show {
       border-top: 1px solid #d6d6d6;
       width: 100%;
-      // TODO 移动版
-      // height: 500px;
-      height: 390px;
+
+      // TODO: 移动版
+      // margin-top: 75px;
+      height: 500px;
+      // position: fixed;
+      // top: 75px;
+
+      // height: 390px;
       overflow-y: auto;
       position: relative;
 
       #dialog-wrapper {
-        // TODO 移动版
-        // min-height: 500px;
-        min-height: 390px;
+        // TODO: 移动版
+        min-height: 500px;
+        // min-height: 390px;
         width: 100%;
         bottom: 0;
         left: 0;
