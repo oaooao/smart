@@ -17,6 +17,8 @@ const state = {
     location: '', // 位置
     temperature: '' // 温度
   },
+  sname: '',
+  saddress: '',
   dropdownValue: '0', // 显示which4S店
   dateFlag: false // 控制日期框的旗帜
 }
@@ -59,6 +61,16 @@ const mutations = {
   // 绝对定位
   SET_POSITION: (state, value) => {
     state.position = value
+  },
+
+  // 更新SNAME
+  SET_SNAME: (state, value) => {
+    state.sname = value
+  },
+
+  // 更新SNAME
+  SET_SADRESS: (state, value) => {
+    state.saddress = value
   }
 }
 

@@ -23,6 +23,12 @@ export default {
     },
     sname_id: {
       type: String
+    },
+    sname: {
+      type: String
+    },
+    saddress: {
+      type: String
     }
   },
   created() {
@@ -50,19 +56,16 @@ export default {
         }
       },
       handlePickDate: async (date, b) => {
-        // const sname_id = this.sname_id
-        // const pickedDate = new Date(date)
-        // const year = pickedDate.getFullYear()
-        // const month = pickedDate.getMonth() + 1
-        // const day = pickedDate.getDate()
-
+        const { sname, saddress } = this
+        // 收集用户的预约信息
+        this.$store.commit('SET_SNAME', sname)
+        this.$store.commit('SET_SADRESS', saddress)
+        // 禁选
         this.dateForbid(true)
-
+        // 关闭日期框
         this.togglePanel('-1')
-
+        // 把用户pick的日期发给后端
         await this.api_query({ value: date })
-
-        // this.api_setShopData({ sname_id, year, month, day })
       }
     }
   },

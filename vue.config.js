@@ -3,7 +3,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/robot': {
-        target: 'http://172.20.10.2:9090/',
+        target: 'http://172.20.10.4:9090/',
         secure: false,
         changeOrigin: true,
         ws: true

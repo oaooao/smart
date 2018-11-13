@@ -37,6 +37,7 @@
                   </span>
                   <div v-if="!dialog.msg" style="marginBottom: 10px">
                     <Table :columns="columns" :data="tableData" v-if="dialog.intention === '补贴'" border></Table>
+                    <!-- <Table :columns="columns2" :data="tableData2" v-if="dialog.action === 'book_drive_satisfy'" border></Table> -->
                   </div>
                   <span v-if="!dialog.msg" style="fontStyle: italic; fontSize: 13px">{{ dialog.s3 }}</span>
               </div>
@@ -47,10 +48,31 @@
 
       </div>
 
+      <!-- 用户信息 -->
+      <div class="details" v-if="dialog.action === 'book_drive_satisfy'">
+        <Card style="width:484px">
+          <p slot="title" style="textAlign:center">
+              预约试驾清单
+          </p>
+          <ul>
+              <li class="row" v-for="item in userInfoArray" :key="item.id">
+                <div class="c1">
+                  <!-- <Icon type="md-bulb" /> -->
+                  <!-- <Icon type="ios-create" /> -->
+                  <!-- <Icon type="ios-flame-outline" /> -->
+                  <Icon type="ios-leaf" size="17" color="#d85555"/>
+                  <span>{{ item.title }}</span>
+                </div>
+                <div class="c2">{{ item.value }}</div>
+              </li>
+          </ul>
+        </Card>
+      </div>
+
       <!-- FAQ知识卡片 -->
       <div v-else-if="dialog.type === 'card'" class="card">
         <Card v-for="item in cards" :key="item.id" >
-          <p slot="title">{{ item.title }}</p>
+          <p slot="title" >{{ item.title }}</p>
           <img :src="require(`@/assets/images/${item.imgUrl}.jpg`)" alt="" @click="handleCardsClick(item.title)">
         </Card>
       </div>
@@ -62,7 +84,12 @@
               <!-- 4S店的名称(地址) -->
               {{ `${item.sname}(${item.saddress})` }}
               <p slot="content" class="x_mid">
-                <Ford-DatePicker :unavailableDate="item.unavailable_date" :sname_id="item.sname_id"></Ford-DatePicker>
+                <Ford-DatePicker
+                  :unavailableDate="item.unavailable_date"
+                  :sname="item.sname"
+                  :saddress="item.saddress"
+                  :sname_id="item.sname_id">
+                </Ford-DatePicker>
               </p>
           </Panel>
         </Collapse>
@@ -119,7 +146,9 @@ export default {
   },
   computed: {
     ...mapState({
-      Talk: state => state.Talk
+      Talk: state => state.Talk,
+      sname: state => state.Talk.sname,
+      saddress: state => state.Talk.saddress
     }),
 
     position: {
@@ -139,6 +168,22 @@ export default {
       set(v) {
         this.setDropdownValue(v)
       }
+    },
+
+    userInfoArray() {
+      const { name, phone, drive_type } =
+        this.dialog.userInfo && this.dialog.userInfo
+      return [
+        { title: '姓名', value: name, id: '0001' },
+        { title: '手机号', value: phone, id: '0002' },
+        {
+          title: '试驾类型',
+          value: drive_type,
+          id: '0003'
+        },
+        { title: '4S店名称', value: this.sname, id: '0004' },
+        { title: '4S店地址', value: this.saddress, id: '0005' }
+      ]
     }
   },
   data() {
@@ -162,6 +207,17 @@ export default {
           column3: this.dialog.v3
         }
       ]
+      // userInfoArray: [
+      //   { title: '姓名', value: this.dialog.userInfo.name, id: '0001' },
+      //   { title: '手机号', value: this.dialog.userInfo.phone, id: '0002' },
+      //   {
+      //     title: '试驾类型',
+      //     value: this.dialog.userInfo.drive_type,
+      //     id: '0003'
+      //   },
+      //   { title: '4S店名称', value: this.sname, id: '0004' },
+      //   { title: '4S店地址', value: this.saddress, id: '0005' }
+      // ]
     }
   },
   methods: {
@@ -259,6 +315,21 @@ export default {
     right: -6px;
     box-shadow: 3px -3px 7px rgba(0, 0, 0, 0.07);
     background-color: @right-bg;
+  }
+}
+
+.details {
+  display: flex;
+  margin-left: 71px;
+
+  .ivu-card-body {
+    padding: 14px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
   }
 }
 

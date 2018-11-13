@@ -32,6 +32,10 @@ export default {
   left: 0;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .demo-spin-icon-load {
   animation: ani-demo-spin 1s linear infinite;
 }
