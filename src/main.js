@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store/index.js'
 import './plugins/iview.js'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 

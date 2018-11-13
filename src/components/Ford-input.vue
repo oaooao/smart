@@ -30,23 +30,24 @@ export default {
   computed: {
     // 输入框双向绑定
     value: {
-      set (value) {
+      set(value) {
         this.SET_INPUT_VALUE({
           name: this.name,
           value: value
         })
       },
-      get () {
+      get() {
         return this.label[this.name]
       }
     }
   },
 
   methods: {
-    ...mapMutations([]),
-    handleInputBlur (e) {},
+    ...mapMutations(['SET_INPUT_VALUE']),
 
-    handleEnterCilck (e) {}
+    handleInputBlur(e) {},
+
+    handleEnterCilck(e) {}
   }
 }
 </script>

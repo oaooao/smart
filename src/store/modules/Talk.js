@@ -8,8 +8,8 @@ const state = {
       side: 'left',
       msg: '您好，我是AI助理福小兔，很高兴为您服务～',
       type: 'text'
-    },
-    { type: 'card' }
+    }
+    // { type: 'card' }
   ], // 对话数据
   value: '', // 当前输入框的值
   userInfo: {
@@ -17,7 +17,7 @@ const state = {
     location: '', // 位置
     temperature: '' // 温度
   },
-  dropdownValue: '0',
+  dropdownValue: '0', // 显示which4S店
   dateFlag: false // 控制日期框的旗帜
 }
 
@@ -51,12 +51,12 @@ const mutations = {
     state.userInfo.temperature = temperature
   },
 
-  // 更新
+  // 更新显示哪一个下拉框对应的值
   SET_DROPDOWN_VALUE: (state, value) => {
     state.dropdownValue = value
   },
 
-  //
+  // 绝对定位
   SET_POSITION: (state, value) => {
     state.position = value
   }
@@ -73,14 +73,12 @@ const actions = {
   // 提交
   submit: ({ commit, state, dispatch }, payload) => {
     const { value, location } = state
-
+    // 优先选择submit的入参，假如没有入参，则默认值为state.value
     let msg = payload || value
     // 1.更新对话框内容
     commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
-
-    // 特例
+    // 特例（因为百度AI识别不了‘其他城市’）
     if (msg === '其他城市') msg = '合肥市'
-
     // 2.调用AI接口，并呈递回答，再次更新对话框内容
     dispatch('api_query', { value: msg, location })
     // 3.清空输入框
@@ -121,10 +119,12 @@ const actions = {
     console.log('apiData =', apiData)
   },
 
+  // 控制三个4S店的模态框
   api_setShopData: async ({ commit }, data) => {
     setShopData(data)
   },
 
+  // 让日期框变成不可选
   dateForbid: ({ commit }, value) => {
     commit('SET_DATEFLAG', value)
   },
@@ -134,7 +134,7 @@ const actions = {
     commit('SET_DROPDOWN_VALUE', value)
   },
 
-  // position
+  // 设置对话部分div的position
   setPosition: ({ commit }, value) => {
     commit('SET_POSITION', value)
   }
@@ -142,27 +142,15 @@ const actions = {
 
 // eslint-disable-next-line
 const api_query = async ({ value, location }) => {
-  // 入参
   const params = { query: value }
-  // http请求
   const res = await query(params)
-  // 格式化数据
   let apiData = res.data
-
   if (apiData.action === 'give_me_city') {
-    const newRes = await query({
-      query: location
-    })
+    const newRes = await query({ query: location })
     apiData = newRes.data
   }
-  // 返回目标数据
   return apiData
 }
-
-// eslint-disable-next-line
-// const api_setShopData = async({  }) => {
-
-// }
 
 export default {
   state,

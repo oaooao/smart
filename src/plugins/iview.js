@@ -10,7 +10,8 @@ import {
   DatePicker,
   Collapse,
   Panel,
-  Table
+  Table,
+  Spin
 } from 'iview'
 
 import './index.less'
@@ -27,3 +28,4 @@ Vue.component('DatePicker', DatePicker)
 Vue.component('Collapse', Collapse)
 Vue.component('Panel', Panel)
 Vue.component('Table', Table)
+Vue.component('Spin', Spin)

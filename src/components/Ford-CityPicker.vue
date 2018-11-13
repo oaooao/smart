@@ -46,6 +46,7 @@ export default {
     // 更改城市
     handleSelectCity(e) {
       this.submit(e)
+      this.$store.dispatch('setPosition', 'absolute')
     }
   }
 }

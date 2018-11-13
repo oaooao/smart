@@ -2,7 +2,7 @@
  * @Author: Tom
  * @Date: 2018-11-12 19:58:29
  * @Last Modified by: Tom
- * @Last Modified time: 2018-11-12 20:02:56
+ * @Last Modified time: 2018-11-13 17:20:50
  */
 
 <template>
@@ -22,7 +22,7 @@
                 </div>
             </header>
 
-            <section id="show" @mouseenter="handleMouseover" @mouseout="handleMouseout" @scroll="handleScroll">
+            <section id="show" @mouseenter="handleMouseover">
                 <div id="dialog-wrapper" :style="{ position: position }">
                     <Ford-dialog
                         v-for="(dialog, index) in dialogs"
@@ -31,6 +31,19 @@
                         :carShopInfo="dialog.carShopInfo"
                     />
                 </div>
+            </section>
+
+            <section id="options">
+              <div class="btn">
+                <Button
+                  type="info"
+                  v-for="item in questions"
+                  :icon="item.icon"
+                  :key="item.key"
+                  @click="handleQuClick(item.title)">
+                  {{ item.title }}
+                </Button>
+              </div>
             </section>
 
             <footer id="footer">
@@ -63,6 +76,7 @@
 
 <script>
 import FordDialog from '@/components/Ford-dialog'
+import questions from '@/data_config/questions.js'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -74,7 +88,7 @@ export default {
 
   data() {
     return {
-      // position: 'absolute'
+      questions: questions
     }
   },
 
@@ -132,39 +146,18 @@ export default {
           .getElementById('dialog-wrapper')
           .lastElementChild.scrollIntoView()
       })
-      // setTimeout(() => {
-      //   document
-      //     .getElementById('dialog-wrapper')
-      //     .lastElementChild.scrollIntoView()
-      // }, 300)
-    },
-
-    handleMouseout(e) {
-      // this.position = 'absolute'
-    },
-
-    handleScroll(e) {
-      // this.position = 'initial'
     },
 
     handleSubmit(e) {
       this.submit()
 
       this.position = 'absolute'
+    },
 
-      this.$nextTick(() => {
-        document
-          .getElementById('dialog-wrapper')
-          .lastElementChild.scrollIntoView()
-      })
-
-      const obj = document.getElementById('show')
-      // window.location.hash = '#end'
-      // obj.scrollTop = obj.scrollHeight
-      console.log(
-        '滚到底了吗',
-        obj.scrollHeight - obj.scrollTop === obj.clientHeight
-      )
+    handleQuClick(data) {
+      this.setInputValue(data)
+      this.submit(data)
+      this.position = 'absolute'
     }
   }
 }
@@ -262,6 +255,19 @@ export default {
         width: 100%;
         bottom: 0;
         left: 0;
+      }
+    }
+
+    #options {
+      .btn {
+        display: flex;
+        justify-content: space-around;
+        padding: 5px;
+        align-items: center;
+
+        .title {
+          font-size: 14px;
+        }
       }
     }
 

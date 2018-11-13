@@ -18,7 +18,7 @@
                   {{ dialog.msg }}
               </div>
 
-              <!-- 预约试驾意图 -->
+              <!-- 补贴或者预约试驾意图 -->
               <div class="text" v-else-if="dialog.intention === '补贴' || dialog.intention === '预约试驾'">
                   <span v-if="!dialog.msg">
                     {{ dialog.s1 }}
@@ -26,27 +26,20 @@
                   <span v-if="dialog.s1">
                     {{ dialog.location }}
                   </span>
-                  <!-- <Ford-CityPicker :msg="dialog.msg" :location="dialog.location"></Ford-CityPicker> -->
                   <span v-if="!dialog.msg">
                     {{dialog.comma + dialog.s2 }}
                   </span>
                   <!-- 城市选择 -->
-                  <Ford-CityPicker :msg="dialog.msg" :location="dialog.location"></Ford-CityPicker>
+                  <Ford-CityPicker v-if="dialog.s4" :msg="dialog.msg" :location="dialog.location"></Ford-CityPicker>
                   <span>{{ dialog.s4 }}</span>
                   <span>
                     {{ dialog.msg }}
                   </span>
-
                   <div v-if="!dialog.msg" style="marginBottom: 10px">
                     <Table :columns="columns" :data="tableData" v-if="dialog.intention === '补贴'" border></Table>
                   </div>
-
                   <span v-if="!dialog.msg" style="fontStyle: italic; fontSize: 13px">{{ dialog.s3 }}</span>
               </div>
-
-              <!-- <div class="text" v-else-if="dialog.intention === '补贴'">
-                  {{ dialog.s1 }}
-              </div> -->
 
               <!-- 对话框箭头 -->
               <div class="arrow"></div>
@@ -62,16 +55,16 @@
         </Card>
       </div>
 
-      <!-- 预约试驾的三个模态框 -->
+      <!-- 预约试驾的三个4S店-->
       <div v-if="dialog.side && dialog.intention === '预约试驾'" class="x">
         <Collapse v-model="dropdownValue" accordion >
-                    <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
-                        {{ `${item.sname}(${item.saddress})` }}
-                        <p slot="content" class="x_mid">
-                          <!-- <DatePicker type="date" placeholder="请选择预约日期" style="width: 240px" size="large" :options="options"></DatePicker> -->
-                          <Ford-DatePicker :unavailableDate="item.unavailable_date" :sname_id="item.sname_id"></Ford-DatePicker>
-                        </p>
-                    </Panel>
+          <Panel :name="''+index" v-for="(item, index) in carShopInfo" :key="item.sname_id">
+              <!-- 4S店的名称(地址) -->
+              {{ `${item.sname}(${item.saddress})` }}
+              <p slot="content" class="x_mid">
+                <Ford-DatePicker :unavailableDate="item.unavailable_date" :sname_id="item.sname_id"></Ford-DatePicker>
+              </p>
+          </Panel>
         </Collapse>
       </div>
     </div>
@@ -178,23 +171,7 @@ export default {
       'updateDialogValue',
       'setDropdownValue',
       'setPosition'
-    ]),
-
-    handleCardsClick(data) {
-      this.setInputValue(data)
-      this.submit(data)
-      this.$nextTick(() => {
-        this.position = 'absolute'
-        document
-          .getElementById('dialog-wrapper')
-          .lastElementChild.scrollIntoView()
-      })
-      const obj = document.getElementById('show')
-      console.log(
-        '滚到底了吗',
-        obj.scrollHeight - obj.scrollTop === obj.clientHeight
-      )
-    }
+    ])
   }
 }
 </script>
