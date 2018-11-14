@@ -51,7 +51,7 @@
       <!-- 用户信息 -->
       <div class="details" v-if="dialog.action === 'book_drive_satisfy'">
         <Card style="width:484px">
-          <p slot="title" style="textAlign:center">
+          <p slot="title" style="textAlign:center;fontSize:16px">
               预约试驾清单
           </p>
           <ul>
@@ -61,7 +61,7 @@
                   <!-- <Icon type="ios-create" /> -->
                   <!-- <Icon type="ios-flame-outline" /> -->
                   <Icon type="ios-leaf" size="17" color="#d85555"/>
-                  <span>{{ item.title }}</span>
+                  <span style="marginLeft: 3px;fontWeight: 500">{{ item.title }}</span>
                 </div>
                 <div class="c2">{{ item.value }}</div>
               </li>
@@ -171,7 +171,7 @@ export default {
     },
 
     userInfoArray() {
-      const { name, phone, drive_type } =
+      const { name, phone, drive_type, date } =
         this.dialog.userInfo && this.dialog.userInfo
       return [
         { title: '姓名', value: name, id: '0001' },
@@ -181,6 +181,7 @@ export default {
           value: drive_type,
           id: '0003'
         },
+        { title: '预约时间', value: date, id: '0004' },
         { title: '4S店名称', value: this.sname, id: '0004' },
         { title: '4S店地址', value: this.saddress, id: '0005' }
       ]
@@ -324,6 +325,11 @@ export default {
 
   .ivu-card-body {
     padding: 14px;
+  }
+
+  .c1 {
+    display: flex;
+    align-items: center;
   }
 
   .row {
