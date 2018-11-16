@@ -2,7 +2,7 @@
  * @Author: Tom
  * @Date: 2018-11-12 19:58:29
  * @Last Modified by: Tom
- * @Last Modified time: 2018-11-13 17:20:50
+ * @Last Modified time: 2018-11-14 14:01:33
  */
 
 <template>
@@ -52,7 +52,7 @@
                         autofocus
                         v-model="value"
                         type="textarea"
-                        :rows="6"
+                        :rows="2"
                         placeholder="请输入您的问题"
                         @keydown.enter.native.prevent="handleSubmit"
                     />
@@ -240,7 +240,7 @@ export default {
 
       // TODO: 移动版
       // margin-top: 75px;
-      height: 500px;
+      height: 545px;
       // position: fixed;
       // top: 75px;
 
@@ -250,7 +250,7 @@ export default {
 
       #dialog-wrapper {
         // TODO: 移动版
-        min-height: 500px;
+        min-height: 545px;
         // min-height: 390px;
         width: 100%;
         bottom: 0;
@@ -280,11 +280,11 @@ export default {
 
       .control {
         position: absolute;
-        bottom: 10px;
-        right: 20px;
+        bottom: 8px;
+        right: 10px;
 
         button {
-          padding: 5px 30px;
+          padding: 5px 20px;
         }
       }
 

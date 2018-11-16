@@ -50,7 +50,7 @@
 
       <!-- 用户信息 -->
       <div class="details" v-if="dialog.action === 'book_drive_satisfy'">
-        <Card style="width:484px">
+        <Card style="width:410px">
           <p slot="title" style="textAlign:center;fontSize:16px">
               预约试驾清单
           </p>
@@ -244,7 +244,7 @@ export default {
 
 .base-style {
   display: flex;
-  padding: 15px 20px;
+  padding: 10px 10px;
 
   .avatar {
     img {
@@ -262,7 +262,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 7px 20px;
+    padding: 5px 10px;
     border-radius: 4px;
     font-size: 14px;
     max-width: 540px;
@@ -321,7 +321,7 @@ export default {
 
 .details {
   display: flex;
-  margin-left: 71px;
+  margin-left: 5px;
 
   .ivu-card-body {
     padding: 14px;
@@ -366,7 +366,7 @@ export default {
 }
 
 .x {
-  margin-left: 68px;
-  width: 60%;
+  margin-left: 10px;
+  width: 95%;
 }
 </style>
