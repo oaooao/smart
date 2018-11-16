@@ -2,7 +2,7 @@
  * @Author: Tom
  * @Date: 2018-11-12 19:58:29
  * @Last Modified by: Tom
- * @Last Modified time: 2018-11-14 14:01:33
+ * @Last Modified time: 2018-11-16 17:36:23
  */
 
 <template>
@@ -11,7 +11,7 @@
 
             <header id="title">
                 <div class="logo">
-                  <img src="@/assets/images/Ford.png" alt="">
+                  <img src="@/assets/images/headLogo2.png" alt="">
                 </div>
                 <div class="info">
                   <img :src="require(`@/assets/images/${weather_condition}.png`)" class="wea-logo" alt="">
@@ -150,7 +150,6 @@ export default {
 
     handleSubmit(e) {
       this.submit()
-
       this.position = 'absolute'
     },
 
@@ -164,8 +163,11 @@ export default {
 </script>
 
 <style lang="less">
+@minHeight: 485px;
+
 .talk {
   // margin-top: 60px;
+  // overflow: hidden;
   display: flex;
   justify-content: center;
 
@@ -198,10 +200,10 @@ export default {
         margin-top: 20px;
 
         > img {
-          width: 95px;
           position: relative;
-          top: 31px;
-          left: 13px;
+          top: 17px;
+          left: -1px;
+          width: 67px;
         }
       }
 
@@ -212,7 +214,7 @@ export default {
 
         > img {
           width: 30px;
-          padding-bottom: 13px;
+          padding-bottom: 10px;
           margin: 0 3px;
         }
 
@@ -230,6 +232,8 @@ export default {
 
         .location-logo {
           width: 15px;
+          padding-bottom: 16px;
+          width: 13px;
         }
       }
     }
@@ -240,17 +244,18 @@ export default {
 
       // TODO: 移动版
       // margin-top: 75px;
-      height: 545px;
+      height: @minHeight;
       // position: fixed;
       // top: 75px;
 
       // height: 390px;
-      overflow-y: auto;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
       position: relative;
 
       #dialog-wrapper {
         // TODO: 移动版
-        min-height: 545px;
+        min-height: @minHeight;
         // min-height: 390px;
         width: 100%;
         bottom: 0;

@@ -63,7 +63,7 @@ export default {
         // 禁选
         this.dateForbid(true)
         // 关闭日期框
-        this.togglePanel('-1')
+        this.togglePanel('-2')
         // 把用户pick的日期发给后端
         await this.api_query({ value: date })
       }

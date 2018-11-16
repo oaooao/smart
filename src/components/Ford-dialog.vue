@@ -6,7 +6,7 @@
           <!-- 头像 -->
           <div class="avatar">
               <!-- 机器人头像 -->
-              <img v-if="dialog.side === 'left'" src="@/assets/images/fordLogo.png" alt="">
+              <img v-if="dialog.side === 'left'" src="@/assets/images/newLogo.jpg" alt="">
               <!-- 用户头像 -->
               <img v-else src="@/assets/wx-icon.jpeg" alt="">
           </div>
@@ -251,6 +251,7 @@ export default {
       width: 40px;
       height: 40px;
       border-radius: 3px;
+      border-radius: 50%;
     }
   }
 

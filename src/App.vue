@@ -32,6 +32,10 @@ export default {
   left: 0;
 }
 
+body {
+  overflow: hidden;
+}
+
 ul {
   list-style-type: none;
 }

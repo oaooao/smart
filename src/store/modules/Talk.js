@@ -1,4 +1,5 @@
 import { query, getWeatherAndLocation, setShopData } from '../../api/views/Talk'
+import { Message } from 'element-ui'
 
 const state = {
   position: 'absolute',
@@ -19,7 +20,7 @@ const state = {
   },
   sname: '',
   saddress: '',
-  dropdownValue: '0', // 显示which4S店
+  dropdownValue: '-1', // 显示which4S店
   dateFlag: false // 控制日期框的旗帜
 }
 
@@ -88,7 +89,15 @@ const actions = {
     // 优先选择submit的入参，假如没有入参，则默认值为state.value
     let msg = payload || value
     // 1.更新对话框内容
-    commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
+    if (!msg) {
+      Message({
+        message: '输入不能为空哦！',
+        type: 'error',
+        duration: 3 * 1000
+      })
+    } else {
+      commit('SET_DIALOG_VALUE', { side: 'right', msg, type: 'text' })
+    }
     // 特例（因为百度AI识别不了‘其他城市’）
     if (msg === '其他城市') msg = '合肥市'
     // 2.调用AI接口，并呈递回答，再次更新对话框内容
