@@ -2,7 +2,7 @@ import axios from 'axios'
 // json ==> string 的工具方法
 import jsonToQuery from '../../utils/jsonToQuery'
 // 加载中的效果
-import { loadingStart, loadingEnd } from '../../utils/loading'
+// import { loadingStart, loadingEnd } from '../../utils/loading'
 
 // 构建axios实例
 const axiosInstance = axios.create({
@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   config => {
-    loadingStart()
+    // loadingStart()
     return config
   },
   error => {
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
 // 响应拦截器
 axiosInstance.interceptors.response.use(
   response => {
-    loadingEnd()
+    // loadingEnd()
     return response
   },
   error => {

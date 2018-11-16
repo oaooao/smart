@@ -19,7 +19,7 @@ const state = {
   },
   sname: '',
   saddress: '',
-  dropdownValue: '0', // 显示which4S店
+  dropdownValue: '-1', // 显示which4S店
   dateFlag: false // 控制日期框的旗帜
 }
 
