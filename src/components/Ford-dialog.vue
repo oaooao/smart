@@ -69,14 +69,6 @@
         </Card>
       </div>
 
-      <!-- FAQ知识卡片 -->
-      <div v-else-if="dialog.type === 'card'" class="card">
-        <Card v-for="item in cards" :key="item.id" >
-          <p slot="title" >{{ item.title }}</p>
-          <img :src="require(`@/assets/images/${item.imgUrl}.jpg`)" alt="" @click="handleCardsClick(item.title)">
-        </Card>
-      </div>
-
       <!-- 预约试驾的三个4S店-->
       <div v-if="dialog.side && dialog.intention === '预约试驾'" class="x">
         <Collapse v-model="dropdownValue" accordion >
@@ -102,26 +94,6 @@
 import { mapActions, mapState } from 'vuex'
 import FordDatePicker from './Ford-DatePicker'
 import FordCityPicker from './Ford-CityPicker'
-
-// 四张卡牌的信息
-const cards = [
-  {
-    title: '补贴政策查询',
-    imgUrl: 'btzc'
-  },
-  {
-    title: '预约试驾',
-    imgUrl: 'yysj'
-  },
-  {
-    title: '领界纯电价格',
-    imgUrl: 'ljjg'
-  },
-  {
-    title: '上海车展',
-    imgUrl: 'gnc2'
-  }
-]
 
 export default {
   components: {
@@ -189,7 +161,6 @@ export default {
   },
   data() {
     return {
-      cards: cards,
       value: '-1',
       options: {
         disabledDate(date) {
