@@ -2,7 +2,7 @@
  * @Author: Tom
  * @Date: 2018-11-12 19:58:29
  * @Last Modified by: Tom
- * @Last Modified time: 2018-11-16 17:36:23
+ * @Last Modified time: 2018-11-19 16:46:21
  */
 
 <template>
@@ -40,6 +40,7 @@
                   v-for="item in questions"
                   :icon="item.icon"
                   :key="item.key"
+                  :disabled="item.disabled"
                   @click="handleQuClick(item.title)">
                   {{ item.title }}
                 </Button>
