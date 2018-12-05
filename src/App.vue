@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Talk></Talk>
+    <div id="iCenter"></div>
   </div>
 </template>
 
@@ -10,7 +11,9 @@ import userId from '@/utils/verify.js'
 
 export default {
   name: 'app',
+
   components: { Talk },
+
   created() {
     this.$store.dispatch('set_userId', userId)
   }
