@@ -80,11 +80,31 @@ import FordDialog from '@/components/Ford-dialog'
 import questions from '@/data_config/questions.js'
 import { mapState, mapActions } from 'vuex'
 
+// import Recorder from '../utils/recorder.1.js'
+import axios from 'axios'
+// import getCoordinate from '../utils/locate.js'
+
+// const recorder = new Recorder()
+
 export default {
   components: { FordDialog },
 
-  created() {
+  async created() {
     this.api_weather()
+    // 获取百度语音识别token
+    const baiduAI_data = await axios.get(
+      'oauth/2.0/token?grant_type=client_credentials&client_id=cbTPPH3wtb7ntvCv3tagy7wG&client_secret=co8y9kYta8KNn3toRv6kaDTl6Z8N2Fha'
+    )
+    this.baiduAI_token = baiduAI_data.data.access_token
+    console.log('this.baiduAI_token =', this.baiduAI_token)
+
+    // 高德定位服务
+    // getCoordinate(async ({ latitude, longitude }) => {
+    //   const Gmap_location_data = await axios.post(
+    //     `https://restapi.amap.com/v3/geocode/regeo?location=${latitude},${longitude}&key=d1e86d855750e3eceef1cb605ab5be4a&extensions=all&batch=false&roadlevel=0`
+    //   )
+    //   console.log('Gmap_location_data =', Gmap_location_data.data)
+    // })
   },
 
   data() {
@@ -152,6 +172,25 @@ export default {
     handleSubmit(e) {
       this.submit()
       this.position = 'absolute'
+
+      // 录音
+      // recorder.start().then(({ len, speech }) =>
+      //   axios
+      //     .post('server_api', {
+      //       format: 'pcm',
+      //       rate: 16000,
+      //       channel: 1,
+      //       token: this.baiduAI_token,
+      //       cuid: '1305034234',
+      //       len,
+      //       speech
+      //     })
+      //     .then(data => console.log('finnal data =', data))
+      // )
+
+      // setTimeout(() => {
+      //   recorder.stop()
+      // }, 5000)
     },
 
     handleQuClick(data) {
